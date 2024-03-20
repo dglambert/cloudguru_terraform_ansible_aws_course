@@ -113,3 +113,26 @@ Create Role - EC2TFRole
 ## Setting up Git and reconciling windows and ubuntu folders
 
     had to setup new personal access token in github 
+
+
+
+## NETWORK SETUP PART 1: DEPLOYING VPCs, INTERNET GWs, AND SUBNETS
+
+    code networks.tf
+        adding network code from video
+    terraform fmt
+    terraform validate
+    terraform plan
+    terraform apply // holding on this for now
+
+### Checking out costs
+    Found this plugin - https://registry.terraform.io/modules/terraform-aws-modules/pricing/aws/latest
+    Which led me to this online tool - https://terraform-cost-estimation.com/
+
+    I was able to use this command, to upload json from terraform plan 
+    `terraform plan -out=plan.tfplan && terraform show -json plan.tfplan > plan.json`
+
+
+## NETWORK SETUP PART 2: DEPLOYING MULTI-REGION VPC Peering
+
+    ...
