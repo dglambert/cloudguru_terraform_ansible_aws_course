@@ -135,4 +135,22 @@ Create Role - EC2TFRole
 
 ## NETWORK SETUP PART 2: DEPLOYING MULTI-REGION VPC Peering
 
-    ...
+    updating network.tf
+        adding network code from video for peering
+            intellisense is showing error for two "route" nodes in one of the aws_route_tables
+        terraform fmt
+            still complaining, realized route takes [] instead of {}, so flattend the second route into first one as array, fmt passing now.
+        terraform validate
+            complaining about other aws_route_table with single route, wrapping in [].
+            Rerun fmt and validate, found a typo with _ instead of a -.
+            Rerun fmt, complaining about missing attributes in my route elements, doing some research. 
+                fixed first issue by correcting syntax for single route. 
+                fixed other issue by adding dafault attributes, running fmt and validate are good now. 
+
+        terraform plan
+        terraform plan -out=plan.tfplan && terraform show -json plan.tfplan > plan.json
+        copying plan.tfplan into https://terraform-cost-estimation.com/
+            estimate is $0
+
+        terraform apply
+        
