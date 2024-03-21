@@ -250,3 +250,20 @@ Create Role - EC2TFRole
     terraform destroy
     
 
+
+## APP VM DEPLOYMENT PART 2: DEPLOYING KEY PAIRS FOR APP NODES
+
+    ssh-keygen -t rsa
+        Your identification has been saved in /home/dlambert/.ssh/id_rsa
+        Your public key has been saved in /home/dlambert/.ssh/id_rsa.pub
+
+    open instances.tf file
+        copy code in from video
+
+    terraform fmt
+    terraform validate
+    terraform plan
+    terraform plan -out=plan.tfplan && terraform show -json plan.tfplan > plan.json
+        copying plan.tfplan into https://terraform-cost-estimation.com/
+            estimate is $0
+    terraform apply
