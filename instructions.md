@@ -154,3 +154,49 @@ Create Role - EC2TFRole
 
         terraform apply
         
+## NETWORK SETUP PART 3: DEPLOYING SECURITY GROUPS
+
+    code security_groups.tf
+        adding security groups code from video
+    terraform fmt
+    terraform validate
+    terraform plan
+    terraform plan -out=plan.tfplan && terraform show -json plan.tfplan > plan.json
+        copying plan.tfplan into https://terraform-cost-estimation.com/
+            estimate is $0
+    terraform apply --auto-approve
+
+    ### fixing typo west-2 to west-1
+        corrected description
+        terraform fmt
+        terraform validate
+        terraform plan
+        terraform apply --auto-approve
+        validated in AWS, description is now correct          
+    
+    ## fixing typo oregon to ncalifornia 
+        updated both definition and references in network.tf of vpc_master_oregon to vpc_master_ncalifornia
+        terraform fmt
+        terraform validate
+        terraform plan
+        terraform apply --auto-approve
+            unsuccessul after several minutes
+            removing remainning resource references to oregon
+            terraform fmt
+            terraform validate
+            terraform plan
+            terraform apply --auto-approve
+            giving up, going forward with terraform destroy
+    
+    terraform destroy
+    check aws for resources, see them removed
+
+    terraform plan
+    terraform apply
+    check aws see all the resource created
+    terraform destroy 
+
+
+
+
+
