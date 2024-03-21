@@ -197,6 +197,56 @@ Create Role - EC2TFRole
     terraform destroy 
 
 
+## APP VM DEPLOYMENT PART 1: USING DATA SOURCE (SSM PARAMETER STORE) TO FETCH AMI IDs
+
+    code instances.tf
+        copy code in from video
+
+    terraform init
+    terraform fmt
+    terraform validate
+    terraform plan
+    terraform plan -out=plan.tfplan && terraform show -json plan.tfplan > plan.json
+        copying plan.tfplan into https://terraform-cost-estimation.com/
+            estimate is $0
+    
+    ### how come video has 18 resource in plan, but I have 16
+        x  aws_internet_gateway.igw: 
+        x  aws_internet_gateway.igw_ncalifornia: 
+
+        x  aws_main_route_table_association.set-master-default-rt-aws_main_route_table_association: 
+        x  aws_main_route_table_association.set-worker-default-rt-ssoc: 
+
+        x  aws_route_table.internet_route: 
+        x  aws_route_table.internet_route_ncalifornia: 
+
+        x  aws_security_group.lb-sg: 
+        x  aws_security_group.jenkins-sg-ncalifornia: 
+        x  aws_security_group.jenkins-sg: 
+
+        x  aws_subnet.subnet_1: 
+        x  aws_subnet.subnet_2: 
+        x  aws_subnet.subnet_1_ncalifornia: 
+
+        x  aws_vpc.vpc_master: 
+        x  aws_vpc.vpc_master_ncalifornia: 
+
+        x  aws_vpc_peering_connection.useast1-uswest2: 
+        x  aws_vpc_peering_connection_accepter.accept_peering: 
 
 
+        MISSING aws_route_table_association.internet_association
+        MISSING aws_route_table_association.internet_association_ncalifornia
+
+        I reviewed videos, but can't find where this should be coming from. Moving on for now.
+
+
+    terraform apply
+
+    // using following command to see actual value used from parameters
+
+    aws s3 cp s3://terraformstatebucket52890/terraformstatefile .
+
+    terraform destroy
+    
 
