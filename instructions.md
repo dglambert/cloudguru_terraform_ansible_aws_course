@@ -273,3 +273,64 @@ Create Role - EC2TFRole
         copying plan.tfplan into https://terraform-cost-estimation.com/
             estimate is $0
     terraform apply
+
+
+## APP VM DEPLOYMENT PART 3: DEPLOYING JENKINS MASTER AND WORKER INSTANCES
+
+
+    code instances.tf
+        copy code in from video to existing file 
+    code variables.tf
+        copy code in from video to existing file
+    code outputs.tf
+        copy code in from video to new file
+
+
+
+    fixing typo in set-master-default-rt-assoc & set-worker-default-rt-assoc
+
+    terraform destroy
+        ran into issues, had to do a git stash, then terraform destroy, as the new resources were confusing the destroy command
+    terraform fmt
+    terraform validate
+    terraform plan
+        error in jenkins-worker-ncalifornia
+            was missing 'id', this was same error when using destroy, I probably could have fixed it and destroy may have worked without having to do the git stash
+        2nd error in jenkins-worker-ncalifornia
+            was missing 'value' this time
+        rerun terraform plan, no issues
+
+    terraform plan -out=plan.tfplan && terraform show -json plan.tfplan > plan.json
+        copying plan.tfplan into https://terraform-cost-estimation.com/
+            Total estimated costs: USD 0.02 per hour, or USD 16.42 per month.
+
+
+    time terraform apply 
+        error in jenkins-worker-ncalifornia, security group and subnet belong to different networks
+            looks like I missed defining vpc_id in jenkins-sg-ncalifornia
+
+            terraform fmt
+            terraform validate
+            time terraform apply
+            no issues
+
+    Jenkins-Main-Node-Public-IP = "<redacted to secrets file>"
+    Jenkins-Worker-Public-IPs = {
+    "i-0f099cec5d6ccbbdb" = "<redacted to secrets file>"
+    }
+
+    ssh ec2-user@<redacted to secrets file>
+    succesfully connected to main node
+    exit
+
+    ssh ec2-user@<redacted to secrets file>
+    succesfully connect to worker node
+    exit
+
+    tried to get windows terminal ssh setup, but gave up for now.
+
+
+## CONFIGURING TERRAFORM PROVISIONERS FOR CONFIG MANAGEMENT VIA ANSIBLE
+
+
+

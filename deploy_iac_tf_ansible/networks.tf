@@ -97,7 +97,7 @@ resource "aws_route_table" "internet_route" {
 
 
 #Overwrite default route table of VPC(Master) with our route table entries
-resource "aws_main_route_table_association" "set-master-default-rt-aws_main_route_table_association" {
+resource "aws_main_route_table_association" "set-master-default-rt-assoc" {
   provider       = aws.region-master
   vpc_id         = aws_vpc.vpc_master.id
   route_table_id = aws_route_table.internet_route.id
@@ -151,7 +151,7 @@ resource "aws_route_table" "internet_route_ncalifornia" {
 
 
 #Overwrite default route table of VPC(Worker) with our route table entries
-resource "aws_main_route_table_association" "set-worker-default-rt-ssoc" {
+resource "aws_main_route_table_association" "set-worker-default-rt-assoc" {
   provider       = aws.region-worker
   vpc_id         = aws_vpc.vpc_master_ncalifornia.id
   route_table_id = aws_route_table.internet_route_ncalifornia.id

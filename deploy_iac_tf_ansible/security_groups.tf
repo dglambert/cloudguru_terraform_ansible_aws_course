@@ -69,6 +69,7 @@ resource "aws_security_group" "jenkins-sg-ncalifornia" {
   provider    = aws.region-worker
   name        = "jenkins-sg-ncalifornia"
   description = "Allow TCP/8080 & TCP/22"
+  vpc_id      = aws_vpc.vpc_master_ncalifornia.id
   ingress {
     description = "Allow 22 from our public IP"
     from_port   = 22
