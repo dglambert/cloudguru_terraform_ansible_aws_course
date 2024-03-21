@@ -1,33 +1,39 @@
+# Intro
 
+    Following cloud guru course - Deploying to AWS with Terraform and Ansible 
+        - https://www.pluralsight.com/cloud-guru/courses/deploying-to-aws-with-terraform-and-ansible
 
-// WINDOWS INSTRUCTIONS
-    
-    choco install terraform --y
-    // refresh ps console
-    terraform version
+    You can find my notes below. 
 
-    choco install python --y
-    // refresh ps console
-
-    pip3 install awscli --user
-
-    pip3 install --upgrade pip
-
-    pip3 install ansible --user
-
-    mkdir deploy_iac_tf_ansible
-    cd .\deploy_iac_tf_ansible\
-
-    wget https://raw.githubusercontent.com/linuxacademy/content-deploying-to-aws-ansible-terraform/master/aws_la_cloudplayground_version/ansible.cfg -OutFile ansible.cfg
-
-    // add C:\Users\Devin\AppData\Roaming\Python\Python312\Scripts to PATH
-
-    aws --version 
-
-    ansible --version  // failing here, Ansible is not supported for Control nodes on Windows. 
 
 
 ## SETTING UP TERRAFORM
+
+    // WINDOWS INSTRUCTIONS
+        
+        choco install terraform --y
+        // refresh ps console
+        terraform version
+
+        choco install python --y
+        // refresh ps console
+
+        pip3 install awscli --user
+
+        pip3 install --upgrade pip
+
+        pip3 install ansible --user
+
+        mkdir deploy_iac_tf_ansible
+        cd .\deploy_iac_tf_ansible\
+
+        wget https://raw.githubusercontent.com/linuxacademy/content-deploying-to-aws-ansible-terraform/master/aws_la_cloudplayground_version/ansible.cfg -OutFile ansible.cfg
+
+        // add C:\Users\Devin\AppData\Roaming\Python\Python312\Scripts to PATH
+
+        aws --version 
+
+        ansible --version  // failing here, Ansible is not supported for Control nodes on Windows. 
 
     // UBUNTU INSTRUCTIONS
         // from https://developer.hashicorp.com/terraform/install
