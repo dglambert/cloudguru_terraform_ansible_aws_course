@@ -332,5 +332,104 @@ Create Role - EC2TFRole
 
 ## CONFIGURING TERRAFORM PROVISIONERS FOR CONFIG MANAGEMENT VIA ANSIBLE
 
+    mkdir ansible_templates
+    cd ansible_templates
+    code jenkins-master-sample.yml
+        copy code in from video to new file
+
+    code jenkins-worker-sample.yml
+        copy code in from video to new file
+
+    cd ..
+    code ansible.cfg
+        copy code in from video to existing file
+
+    cd ansible_templates
+    mkdir inventory_aws
+    cd inventory_aws
+    get yml url from resource section in course - https://raw.githubusercontent.com/linuxacademy/content-deploying-to-aws-ansible-terraform/master/aws_la_cloudplayground_multiple_workers_version/ansible_templates/inventory_aws/tf_aws_ec2.yml
+
+    wget -c https://raw.githubusercontent.com/linuxacademy/content-deploying-to-aws-ansible-terraform/master/aws_la_cloudplayground_multiple_workers_version/ansible_templates/inventory_aws/tf_aws_ec2.yml
+
+    code tf_aws_ec2.tf
+        open downloaded file
+        updating supported regions from west-2 to west-1
+
+    pip3 install boto3 --user
+
+        got an error but I think its just a warning, moving on for now
+
+            Installing collected packages: botocore, boto3
+                Attempting uninstall: botocore
+                    Found existing installation: botocore 1.34.64
+                    Uninstalling botocore-1.34.64:
+                    Successfully uninstalled botocore-1.34.64
+                ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+                awscli 1.32.64 requires botocore==1.34.64, but you have botocore 1.34.67 which is incompatible.
+                Successfully installed boto3-1.34.67 botocore-1.34.67
+
+        cd ..
+        cd ..
+
+        code instances.tf
+            open existing file and copy code in from video
+
+        terraform fmt
+        terraform validate
+        terraform plan
+        terraform apply
+            no changes, I think I need to destroy 
+        
+        terraform destroy 
+        terraform apply
+
+        copy new public ips to secrets file
+
+            Jenkins-Main-Node-Public-IP = "<redacted to secrets file>"
+            Jenkins-Worker-Public-IPs = {
+            "i-06ee1cbcb37712ad3" = "<redacted to secrets file>"
+            }
+
+        ssh ec2-user@<redacted to secrets file>
+        succesfully connect to worker node
+        jq command not working
+        exit
+
+        ssh ec2-user@<redacted to secrets file>
+        succesfully connect to master node
+        git command not working
+        exit
+
+        found issue i think, accidentally used .yaml instead of .yml in ansible.cfg
+            terraform destroy
+            terraform apply
+                still referencing .yaml also saw an error couldn't ssh to worker node, ignoring for now. trying again
+                    terraform destroy
+                    terraform fmt
+                    terraform validate
+                    terraform plan
+                    terraform apply
+
+        yaml issue seems to be resolve now, as I think master was successfully provisioned.
+            testing ssh into master 
+
+            ssh ec2-user@<redacted to secrets file>
+            succesfully connect to master node
+            git command IS working
+            exit
+
+        trying to enable trace logging 
+            export TF_LOG="TRACE"
+            
+            terraform destroy 
+                seeing trace logs now
+            terraform apply 
+
+            turning on log file, as the terminal is getting truncated to quickly due to the size
+                export TF_LOG_PATH="tmp/terraform.log"
+
+                echo "export TF_LOG_PATH=./logs/terraform.log" >> .bashrc
+
+
 
 

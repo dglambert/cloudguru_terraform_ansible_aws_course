@@ -1,0 +1,2 @@
+---
+- hosts: "{{ passed_in_hosts }}"
