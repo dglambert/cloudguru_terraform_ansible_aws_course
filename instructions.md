@@ -537,3 +537,39 @@ Create Role - EC2TFRole
                 export TF_LOG="INFO"
 
 
+## LOAD BALANCING: CREATING AN ALB AND ROUTING TRAFFIC TO EC2 APP NODE
+
+    code alb.tf
+        copy in code from video to new file
+
+    code variables.tf
+        add webserver-port variable
+
+    code security_groups.tf
+        update hardcoded webserver port to use variable
+
+    code alb.tf
+        copy in code from video to existing file
+
+    code outputs.tf
+        add new output for lb dns name
+
+    code ansible_templates/jenkins-master-sample.tf
+        replacing git with install httpd/Apache, and start Apache.
+
+    terraform fmt
+    terraform validate
+    terraform plan
+    terraform apply
+
+        copy and paste dns from output into browser
+            502 bad gateway, I didn't anticipate this to work because the video had a destroy infrastructure to start, and I don't think our ansible-playbook changes trigger changes in terraform. 
+
+        terraform destroy
+            i'm going to wait 5 minutes before applying again, I think some of my issue could be caused by back to back deployments
+        
+        terraform apply
+
+            copy and pase dns from output into browser
+                works this time
+
