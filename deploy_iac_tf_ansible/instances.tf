@@ -66,7 +66,7 @@ resource "aws_instance" "jenkins-worker-oregon" {
 
   tags = {
     Name = join("_", ["jenkins_worker_tf", count.index + 1])
-   }
+  }
   depends_on = [aws_main_route_table_association.set-worker-default-rt-assoc, aws_instance.jenkins-master]
 
   provisioner "local-exec" {
@@ -75,7 +75,7 @@ aws --profile ${var.profile} ec2 wait instance-status-ok --region ${var.region-w
 ansible-playbook --extra-vars 'passed_in_hosts=tag_Name_${self.tags.Name}' ansible_templates/jenkins-worker-sample.yml
 EOF
   }
-  
+
 }
 
 

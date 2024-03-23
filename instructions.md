@@ -5,6 +5,8 @@
 
     You can find my notes below. 
 
+    AWS free tiers - https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc&awsf.Free%20Tier%20Types=*all&awsf.Free%20Tier%20Categories=*all
+
 
 
 ## SETTING UP TERRAFORM
@@ -430,6 +432,108 @@ Create Role - EC2TFRole
 
                 echo "export TF_LOG_PATH=./logs/terraform.log" >> .bashrc
 
+            going through and replacing all ncalifornia refrences to oregon and west-1 to west-2
+                terraform fmt
+                terraform validate
+                terraform plan
+                export TF_LOG="TRACE"
+                terraform apply --auto-approve
+                    no error messages, but could not match host pattern on worker node, so provisioning was skipped
 
+
+            unset TF_LOG
+            adding log_path = ansible.log to ansible.cfg
+
+            adding -v ansible-playbook command to ec2 jenkins-worker-oregon provisioner
+
+            reinstalling boto3, not sure if the error I got earlier could be causing issue with awscli? 
+                --- https://stackoverflow.com/questions/51911075/how-to-check-awscli-and-compatible-botocore-package-is-installed
+                --- https://www.activestate.com/resources/quick-reads/how-to-list-installed-python-packages/
+                --- https://stackoverflow.com/questions/5226311/installing-specific-package-version-with-pip
+                pip3 install boto3==1.34.64 --user --force-reinstall
+                    complaining about botocore
+                        upgrading awscli, uninstalling boto3 and botocore and reinstalling
+                            pip3 install awscli --upgrade --user
+                                # removed v 1.32.64, installed 1.32.69
+                            pip3 uninstall botocore
+                            pip3 uninstall boto3
+
+                            pip3 install botocore --user
+                                installed 1.34.69
+                            pip3 install boto3 --user
+                                installed 1.34.69
+            
+            terraform destroy
+            terraform plan
+            clearing ansible.log and terraform log 
+            export TF_LOG="DEBUG"
+            terraform apply --auto-approve
+
+
+            works locally
+            ansible-playbook --extra-vars 'passed_in_hosts=tag_Name_jenkins_master_tf' ansible_templates/jenkins-master-sample.yml
+
+            doesnt work locally
+            ansible-playbook -vvv --extra-vars 'passed_in_hosts=tag_Name_jenkins_worker_tf_1' ansible_templates/jenkins-worker-sample.yml
+
+
+            https://developer.hashicorp.com/terraform/language/resources/provisioners/local-exec
+            realized explicit call to ansible-playbook in provisioner block, going to focus on this call. 
+            may try adding following block to provisioner block to see if they execute, I suspect terraform/provisioner block is not the problem though 
+                echo profile: ${var.profile}
+                echo region: ${var.region-worker}
+                echo instance-ids" ${self.id}
+                echo tags.Name: ${self.tags.Name}
+
+
+
+            after tooling around for a bit, I realized that terraform provisioner was probably not the problem, but the call the ansible-playbook, so I pulled it out and ran it from terminal locally. 
+            I am able to run master playbook, but worker fails, so this indicates an issue with ansible.
+            upon further investigation, I am investigating the Ansible AWS Dynamic Inventory Plugin
+                - https://docs.ansible.com/ansible/latest/collections/amazon/aws/docsite/aws_ec2_guide.html
+                - https://github.com/ansible/terraform-provider-ansible/issues/94
+
+                ansible-inventory -i ansible_templates/inventory_aws/tf_aws_ec2.yml  --graph 
+                    I can see when running this command, the corret ip is found when using tag tag_Name_jenkins_worker_tf_1
+
+
+
+                I also noticed when logging into aws, that the worker tag was set to jenkins_worker_tf, i manually added _1 and then after a few minutes I am no longer having the issue of host name not found. 
+                A new issue has appeared which is:     "msg": "Failed to connect to the host via ssh: dlambert@54.213.120.67: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).",
+
+                adding -vvv to ansible-playbook command
+                https://stackoverflow.com/questions/68199480/ssh-permission-denied-for-ec2-using-ansible
+                ansible-playbook -vvv --extra-vars 'passed_in_hosts=tag_Name_jenkins_worker_tf_1' ansible_templates/jenkins-worker-sample.yml
+
+
+                Noticed in the logs for worker 'ESTABLISH SSH CONNECTION FOR USER: None', but when looking at logs for master I see 'ESTABLISH SSH CONNECTION FOR USER: ec2-user'
+
+                    adding -e "ansible_user=ec2-user" fixed it.
+                        https://stackoverflow.com/questions/35024576/establish-ssh-connection-for-user-none-when-specify-a-single-host-on-the-comman
+                        ansible-playbook -vvv --extra-vars 'passed_in_hosts=tag_Name_jenkins_worker_tf_1' ansible_templates/jenkins-worker-sample.yml -e "ansible_user=ec2-user" 
+                
+                    Going to hold off on this till I fix the missing _tf_1 issue from worker instances
+
+                terraform destroy --auto-approve
+                terraform fmt
+                terraform validate
+                terraform plan
+                clear logs
+                terraform apply --auto-approve
+
+                it worked this time, not sure how, but tagging is correct, and worker ansible playbook executed succesfully
+
+
+                    ssh ec2-user@<redacted to secrets file>
+                    succesfully connect to worker node
+                    jq command working
+                    exit
+
+                    ssh ec2-user@<redacted to secrets file>
+                    succesfully connect to master node
+                    git command working
+                    exit
+
+                export TF_LOG="INFO"
 
 
