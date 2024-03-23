@@ -5,8 +5,8 @@ data "aws_ssm_parameter" "linuxAmi" {
   name     = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
 }
 
-#Get Linux AMI ID using SSM Parameter endpoint in us-west-1
-data "aws_ssm_parameter" "linuxAmiNCalifornia" {
+#Get Linux AMI ID using SSM Parameter endpoint in us-west-2
+data "aws_ssm_parameter" "linuxAmiOregon" {
   provider = aws.region-worker
   name     = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
 }
@@ -20,7 +20,7 @@ resource "aws_key_pair" "master-key" {
   public_key = file("~/.ssh/id_rsa.pub")
 }
 
-#Create key-pair for logging into EC2 in us-west-1
+#Create key-pair for logging into EC2 in us-west-2
 resource "aws_key_pair" "worker-key" {
   provider   = aws.region-worker
   key_name   = "jenkins"
@@ -51,23 +51,22 @@ aws --profile ${var.profile} ec2 wait instance-status-ok --region ${var.region-m
 ansible-playbook --extra-vars 'passed_in_hosts=tag_Name_${self.tags.Name}' ansible_templates/jenkins-master-sample.yml
 EOF
   }
-
 }
 
-#Create EC2 in us-west-1
-resource "aws_instance" "jenkins-worker-ncalifornia" {
+#Create EC2 in us-west-2
+resource "aws_instance" "jenkins-worker-oregon" {
   provider                    = aws.region-worker
   count                       = var.worker-count
-  ami                         = data.aws_ssm_parameter.linuxAmiNCalifornia.value
+  ami                         = data.aws_ssm_parameter.linuxAmiOregon.value
   instance_type               = var.instance-type
   key_name                    = aws_key_pair.worker-key.key_name
   associate_public_ip_address = true
-  vpc_security_group_ids      = [aws_security_group.jenkins-sg-ncalifornia.id]
-  subnet_id                   = aws_subnet.subnet_1_ncalifornia.id
+  vpc_security_group_ids      = [aws_security_group.jenkins-sg-oregon.id]
+  subnet_id                   = aws_subnet.subnet_1_oregon.id
 
   tags = {
     Name = join("_", ["jenkins_worker_tf", count.index + 1])
-  }
+   }
   depends_on = [aws_main_route_table_association.set-worker-default-rt-assoc, aws_instance.jenkins-master]
 
   provisioner "local-exec" {
@@ -76,7 +75,7 @@ aws --profile ${var.profile} ec2 wait instance-status-ok --region ${var.region-w
 ansible-playbook --extra-vars 'passed_in_hosts=tag_Name_${self.tags.Name}' ansible_templates/jenkins-worker-sample.yml
 EOF
   }
-
+  
 }
 
 

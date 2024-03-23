@@ -10,7 +10,7 @@ variable "region-master" {
 
 variable "region-worker" {
   type    = string
-  default = "us-west-1"
+  default = "us-west-2"
 }
 
 variable "external_ip" {

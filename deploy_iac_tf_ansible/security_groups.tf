@@ -49,7 +49,7 @@ resource "aws_security_group" "jenkins-sg" {
     security_groups = [aws_security_group.lb-sg.id]
   }
   ingress {
-    description = "allow traffic from us-west-1"
+    description = "allow traffic from us-west-2"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -64,12 +64,12 @@ resource "aws_security_group" "jenkins-sg" {
 }
 
 
-#Create SG for allowing TCP/22 from your IP in us-west-1
-resource "aws_security_group" "jenkins-sg-ncalifornia" {
+#Create SG for allowing TCP/22 from your IP in us-west-2
+resource "aws_security_group" "jenkins-sg-oregon" {
   provider    = aws.region-worker
-  name        = "jenkins-sg-ncalifornia"
+  name        = "jenkins-sg-oregon"
   description = "Allow TCP/8080 & TCP/22"
-  vpc_id      = aws_vpc.vpc_master_ncalifornia.id
+  vpc_id      = aws_vpc.vpc_master_oregon.id
   ingress {
     description = "Allow 22 from our public IP"
     from_port   = 22
