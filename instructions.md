@@ -653,3 +653,28 @@ Create Role - EC2TFRole
 
     code tf.png 
 
+
+
+## ANSIBLE PLAYBOOKS AND SYNTAX CHECKING
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

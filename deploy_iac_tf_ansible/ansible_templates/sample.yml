@@ -1,0 +1,7 @@
+---
+- hosts: cloud-nodes
+  tasks:
+    - name: ensure apache is at the latest version
+      um: 
+        name: httpd
+        state: latest
