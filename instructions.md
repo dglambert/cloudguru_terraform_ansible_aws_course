@@ -657,8 +657,47 @@ Create Role - EC2TFRole
 
 ## ANSIBLE PLAYBOOKS AND SYNTAX CHECKING
 
-    
+    cd ansible_templates
+    code sample.yml
+        copy in code from video
 
+    fixing vscode error - "Ansible-lint is not available. Kindly check the path or disable validation using ansible-lint"
+        ansible-lint --version
+            not recognzed 
+        pip3 install ansible-lint
+        
+        ansible-lint --version
+            working now
+        reload vs code, no errors. 
+
+    ansible-playbook --syntax-check sample.yml
+
+    echo $? 
+        checks status code of last command - 0 
+    
+    code sample.yml
+        make a typo
+    
+    ansible-playbook --syntax-check sample.yml
+        throws error
+
+    echo $?
+        returns 4
+
+
+    
+## BUILDING PLAYBOOK FOR JENKINS MASTER SETUP
+
+
+    cd ansible_templates
+
+    code install_jenkins_msater.yml
+        copy in code from video
+    
+     ansible-playbook --syntax-check -e "passed_in_hosts=localhost" install_jenkins_master.yml
+
+     echo $?
+        returns 0
 
 
 
