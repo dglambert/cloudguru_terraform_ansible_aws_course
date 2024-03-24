@@ -715,6 +715,21 @@ Create Role - EC2TFRole
 
 
 
+## BUILDING JINJA2 TEMPLATES FOR ANSIBLE 
+
+    cd ansible_templates
+
+    code node.j2 
+        copy in code from resources tab in cloudguru
+
+    code cred-privkey.j2
+        copy in code from resources tab in cloudguru
+
+    
+    
+
+
+
 
 
 
