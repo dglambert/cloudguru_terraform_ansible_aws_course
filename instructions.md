@@ -624,4 +624,32 @@ Create Role - EC2TFRole
     terraform destroy --auto-approve
 
     
-    
+## TERRAFORM OUTPUTS AND TERRAFORM GRAPH
+
+    terraform apply --auto-approve
+
+
+    terraform output
+
+    cat outputs.tf
+        grabbing url
+
+    terraform output url
+
+    terraform state list
+
+    terraform console
+        aws_instance.jenkins-master
+        aws_instance.jenkins-master.private_ip
+
+        join(".", ["terraform", "acg"])
+
+    terraform graph > tf.dot
+    code tf.dot
+
+    sudo apt install graphviz
+
+    cat tf.dot | dot -T png -o tf.png
+
+    code tf.png 
+
