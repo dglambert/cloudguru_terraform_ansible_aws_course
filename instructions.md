@@ -573,3 +573,55 @@ Create Role - EC2TFRole
             copy and pase dns from output into browser
                 works this time
 
+
+
+## PUTTING IT ALL BEHIND DNS: SETTING UP HTTPS AND ROUTE 53 RECORD
+
+    purchased grocerysage.com on aws route53
+
+    aws route53 list-hosted-zones
+
+        copy name => grocerysage.com.
+
+    code variables.tf
+        add new variable dns-name with copied value from above
+
+    code dns.tf
+        copy in code from video to new file
+
+    code acm.tf
+        copy in code from video to new file
+
+    code dns.tf
+        add cert validation
+    
+    code acm.tf
+        add cert
+
+    code alb.tf
+        enable redirect on port 80 listener
+        add https listener
+
+    code dns.tf
+        add route53 record
+
+    code outputs.tf
+        add url 
+
+
+    terraform fmt
+    terraform validate
+    terraform plan
+    terraform apply
+        failed
+
+    terraform destroy
+    terraform apply
+
+    copy url output and paste into browser
+        its working 
+
+    terraform destroy --auto-approve
+
+    
+    

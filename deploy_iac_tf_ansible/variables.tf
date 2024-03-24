@@ -33,6 +33,11 @@ variable "webserver-port" {
   default = 80
 }
 
+variable "dns-name" {
+  type    = string
+  default = "grocerysage.com."
+}
+
 
 
 
