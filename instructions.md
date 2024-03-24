@@ -701,6 +701,20 @@ Create Role - EC2TFRole
 
 
 
+## BUILDING PLAYBOOK FOR JENKINS WORKER SETUP
+
+    cd ansible_templates
+
+    code install_jenkins_worker.yml
+        copy in code from video 
+
+     ansible-playbook --syntax-check -e "passed_in_hosts=localhost" install_jenkins_worker.yml
+    
+     echo $?
+        returns 0
+
+
+
 
 
 
