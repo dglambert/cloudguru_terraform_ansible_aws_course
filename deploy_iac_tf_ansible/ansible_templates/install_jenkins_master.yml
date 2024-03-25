@@ -3,10 +3,10 @@
   become: yes
   remote_user: ec2-user
   become_user: root
-  tasks: 
+  tasks:
     - name: install dependencies
       yum: 
-        name: " {{package}} "
+        name: "{{ package }} "
         state: present
       vars:
         package:
@@ -25,7 +25,7 @@
     - name: Import Jenkins Repo GPG key
       rpm_key:
         state: present
-        key: https://pkg.jenkins.io/redhat/jenkins.io.key
+        key: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
 
     - name: install Jenkins
       yum: 
@@ -36,6 +36,11 @@
       service: 
         name: jenkins
         state: stopped
+        
+    - name: Modify user shell
+      user:
+        name: jenkins
+        shell: /bin/bash
 
     - name: Delete Jenkins default dir
       file: 

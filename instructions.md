@@ -728,8 +728,38 @@ Create Role - EC2TFRole
     
     
 
+## VERIFYING OUR IAC CODE AND TERRAFORM APPLY 
 
+    code instances.tf
+        update worker and master provisioners to use new playbooks
+        add worker destroy time provisioner
 
+    code ansible_templates/install_jenkins_worker.yml
+        check value for auth fle
+
+    echo "admin:password" > ansible_templates/jenkins_auth
+
+    code variables.tf
+        update webserver-port to 8080
+
+    terraform fmt
+    terraform validate
+        he got a warning in video that can be ignored, but I am getting an error
+    terraform plan
+
+        fixed by hardcoding ${aws_instance.jenkins-master.private_ip} to jenkins.grocerysage.com
+
+    terraform apply --auto-approve
+        failed on Install Jenkins on master
+            ansible-playbook -vvv --extra-vars 'passed_in_hosts=tag_Name_jenkins_master_tf' ansible_templates/install_jenkins_master.yml
+
+            swapped out gpg key - https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+            src: https://stackoverflow.com/questions/61344317/im-getting-error-public-key-for-jenkins-2-232-1-1-noarch-rpm-is-not-installed
+
+            new error, going to sync up missing tasks when I diffed ymls from resources on cloudguru 
+
+                adding 'Modify user shell' to master yml
+                adding 'Allow execute perm to jenkins-cli.jar' to worker yml
 
 
 
